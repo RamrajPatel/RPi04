@@ -44,9 +44,6 @@ class BasicTCPRequestDispatcher(object):
     @staticmethod
     def dispatch_connection(connection):
         print('Dispatching Received Request')
-        '''
-            Geting Logger Object
-        '''
         my_logger = PyLogs(__name__)
         logg = my_logger.get_pylogger()
         logg.info('Logger object created')
@@ -62,7 +59,7 @@ class BasicTCPRequestDispatcher(object):
             """
                 Generation of transaction based session from dispatcher received data
                 How will i get user info for session object ??
-                Currently Hardcoding the user information for authenticate user
+                Currently Hard-coding the user information for authenticate user
             """
             user_info = '{"user_id" : "RRP00001", "user_name" : "Ramraj Patel"}'
             req_dsipatcher_session = Session(user_info, input_request_data, connection, logg)
@@ -83,72 +80,44 @@ class BasicTCPRequestDispatcher(object):
             error_source = "Executor of TCPRequestDispatcher"
             error_type = sys.exc_info()[0].__name__
             error_msg = "Unexpected Error in Dispatching Connection, Please Contact with Support Team"
-            # logg.error('Socket bind fail, Reason: ' + error_type)
             logg.error('Unexpected Server Connection Dispatching Error, Reason: ' + error_type)
             process_failure(error_source, error_type, error_msg, connection)
 
 
 if __name__ == '__main__':
-    # '''
-    #     Geting Logger Object
-    # '''
-    # my_logger = PyLogs()
-    # logg = my_logger.get_pylogger()
-    # # logg.flush()
-    # logg.info('Logger object created')
-
     socketObj = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # print('Socket created')
-    # logg.info('Socket created')
 
     ''' Bind socket to local host and port  '''
     # noinspection PyBroadException
     try:
         socketObj.bind((GlobalData.HOST_IP, GlobalData.REQUEST_PORT))
-        # logg.info('Socket bind complete')
         print('Socket bind complete')
 
     except socket.error as bind_fail_err:
         error_source = "Executor of TCPRequestDispatcher"
         error_type = bind_fail_err.__class__.__name__
         error_msg = "Server Socket Binding Fail"
-        # logg.error('Socket bind fail, Reason: ' + error_type)
-        # error_code=155
-        # process_failure(error_source, error_type, error_msg)
         sys.exit()
     except:
-        # logg.error('Socket bind fail')
         error_source = "Executor of TCPRequestDispatcher"
         error_type = sys.exc_info()[0].__name__
         error_msg = "Unexpected Error while Socket Binding"
-        # logg.error('Socket bind fail, Reason: ' + error_type)
-        # error_code=155
-        # process_failure(error_source, error_type, error_msg)
         sys.exit()
 
     '''  Start listening on socket '''
     # noinspection PyBroadException
     try:
-        # socketObj.listen(10)
         socketObj.listen(GlobalData.MAX_LISTENING_CAPACITY)
         print('Socket is Now listening Mode')
-        # logg.info('Socket is Now listening Mode')
     except socket.error as listen_fail_err:
         error_source = "Executor of TCPRequestDispatcher"
         error_type = listen_fail_err.__class__.__name__
         error_msg = "Server Socket Listening Problem"
-        # logg.error('Socket listening error, Reason: ' + error_type)
-        # error_code=155
-        # process_failure(error_source, error_type, error_msg)
         sys.exit()
     except:
-        # logg.error('Socket listening exception')
         error_source = "Executor of TCPRequestDispatcher"
         error_type = sys.exc_info()[0].__name__
         error_msg = "Unexpected Error while Listening"
-        # logg.error('Socket listening error, Reason: ' + error_type)
-        # error_code=155
-        # process_failure(error_source, error_type, error_msg)
         sys.exit()
 
     tcp_req_obj = BasicTCPRequestDispatcher()
@@ -161,25 +130,17 @@ if __name__ == '__main__':
         # noinspection PyBroadException
         try:
             connection_details, address = socketObj.accept()
-            # logg.info('Socket connected to:' + address[0] + ':' + str(address[1]))
             print('Connected with ' + address[0] + ':' + str(address[1]))
-            # err_socket_context = connection_details
-            # global err_socket_context
 
         except socket.error as conn_accept_fail_err:
             error_source = "In MAIN of Executor of TCPRequestDispatcher"
             error_type = conn_accept_fail_err.__class__.__name__
             error_msg = "Server Socket Connection Accept Problem"
-            # logg.error('Socket connecting to client fail, Reason: ' + error_type)
-            # error_code=155
             process_failure(error_source, error_type, error_msg, connection_details)
         except:
-            # logg.error('Socket connecting to client fail')
             error_source = "In MAIN of Executor of TCPRequestDispatcher"
             error_type = sys.exc_info()[0].__name__
             error_msg = "Unexpected Error while Accepting Connection"
-            # logg.error('Socket connecting to client fail, Reason: ' + error_type)
-            # error_code=155
             process_failure(error_source, error_type, error_msg, connection_details)
 
         '''
@@ -192,31 +153,22 @@ if __name__ == '__main__':
         try:
             with ThreadPoolExecutor(max_workers=3) as executor:
                 f1 = executor.submit(tcp_req_obj.dispatch_connection(connection_details))
-                # f1 = executor.submit(tcp_req_obj.dispatch_connection(connection_details, logg))
         except Exception as thread_pool_fail_msg:
             error_source = "In MAIN of Executor of TCPRequestDispatcher"
             error_type = thread_pool_fail_msg.__class__.__name__
             error_msg = "Thread Creation Aborted, Exiting Program"
-            # logg.error('Aborting Thread Pool, Reason: ' + error_type)
-            # error_code=155
             process_failure(error_source, error_type, error_msg, connection_details)
 
-    # logg.info('Client processing Done, closing Server Socket')
     # noinspection PyBroadException
     try:
         socketObj.close()
-        # logg.info('Server Socket Closing Done, Exiting Program')
     except socket.error as socket_close_err:
         error_source = "In MAIN of Executor of TCPRequestDispatcher"
         error_type = socket_close_err.__class__.__name__
         error_msg = "Server Socket Closing Problem, Exiting Program"
-        # logg.error('Server Socket Closing Error, Reason: ' + error_type)
-        # error_code=155
         process_failure(error_source, error_type, error_msg, connection_details)
     except:
         error_source = "In MAIN of Executor of TCPRequestDispatcher"
         error_type = sys.exc_info()[0].__name__
         error_msg = "Unexpected Error while Closing Connection, Exiting Program"
-        # logg.error('Server Socket Closing Error, Reason: ' + error_type)
-        # error_code=155
         process_failure(error_source, error_type, error_msg, connection_details)

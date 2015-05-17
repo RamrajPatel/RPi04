@@ -3,7 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/RPi04.iml" filepath="$PROJECT_DIR$/.idea/RPi04.iml" />
-      <module fileurl="file://$USER_HOME$/Google Drive/Code/Python/TestApp/.idea/TestApp.iml" filepath="$USER_HOME$/Google Drive/Code/Python/TestApp/.idea/TestApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../TestApp/.idea/TestApp.iml" filepath="$PROJECT_DIR$/../TestApp/.idea/TestApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../audiogrep/.idea/audiogrep.iml" filepath="$PROJECT_DIR$/../audiogrep/.idea/audiogrep.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../flask/.idea/flask.iml" filepath="$PROJECT_DIR$/../flask/.idea/flask.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../flask-web-proj/.idea/flask-mvc.iml" filepath="$PROJECT_DIR$/../flask-web-proj/.idea/flask-mvc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../requests/.idea/requests.iml" filepath="$PROJECT_DIR$/../requests/.idea/requests.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../user-module/.idea/user-module.iml" filepath="$PROJECT_DIR$/../user-module/.idea/user-module.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../youtube-dl/.idea/youtube-dl.iml" filepath="$PROJECT_DIR$/../youtube-dl/.idea/youtube-dl.iml" />
     </modules>
   </component>
 </project>
